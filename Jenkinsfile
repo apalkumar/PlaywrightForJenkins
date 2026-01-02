@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/apalkumar/PlaywrightForJenkins.git'
+                git branch: 'main', url: 'https://github.com/apalkumar/PlaywrightForJenkins.git
             }
         }
 
@@ -20,7 +20,7 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
+        stage('Run Tests in parallel') {
             steps {
                 bat 'pytest -n auto --alluredir=allure-results'
             }
