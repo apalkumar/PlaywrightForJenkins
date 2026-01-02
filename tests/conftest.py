@@ -22,7 +22,7 @@ def browser_context(playwright: Playwright):
     Each test gets a fresh browser context
     safe for pytest-xdist parallel runs.
     """
-    browser = playwright.chromium.launch(headless=False)
+    browser = playwright.chromium.launch(headless=True)
 
     context = browser.new_context(
         viewport=None,
