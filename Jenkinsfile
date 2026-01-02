@@ -10,7 +10,7 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/your/repo.git'
+                git branch: 'main', url: 'https://github.com/apalkumar/PlaywrightForJenkins.git'
             }
         }
 
@@ -27,7 +27,7 @@ pipeline {
         stage('Run Tests in Parallel') {
             steps {
                 echo "Running tests in parallel..."
-                bat 'pytest -n auto --alluredir=allure-results'
+                bat 'pytest -n 3 --alluredir=allure-results'
             }
         }
 
