@@ -41,6 +41,12 @@ jobs:
       with:
         name: allure-results
         path: allure-results
+
+    - name: Run tests inside Xvfb
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y xvfb
+        xvfb-run -a pytest -n auto --alluredir=allure-results        
     # # 6. Generate Allure HTML Report
     # - name: Generate Allure report
     #   uses: ashikkumar23/[email protected]
