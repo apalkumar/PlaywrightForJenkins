@@ -2,14 +2,13 @@ pipeline {
     agent any
 
     tools {
-        python 'python3'          // name you defined
-        allure 'allure'          // Allure CLI name
+        allure 'allure'   // your global Allure CLI installation name
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/apalkumar/PlaywrightForJenkins.git'
+                git branch: 'main', url: 'https://github.com/apalkumar/PlaywrightForJenkins.git'
             }
         }
 
@@ -21,11 +20,18 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
+        stage('Run Tests in parallel') {
             steps {
                 bat 'pytest -n auto --alluredir=allure-results'
             }
         }
+
+        stage('Check Python') {
+            steps {
+                bat 'python --version'
+                bat 'pip --version'
+  }
+}
     }
 
     post {
