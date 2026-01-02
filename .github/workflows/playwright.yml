@@ -1,0 +1,56 @@
+name: Run Playwright Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Checkout the repository
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # 2. Set up Python
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: 3.13
+
+    # 3. Install dependencies
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-xdist allure-pytest
+        pip install playwright
+        playwright install
+
+    # 4. Run tests
+    - name: Run tests with pytest
+      run: |
+        pytest -n auto --alluredir=allure-results
+
+    # 5. Upload Allure results as artifacts
+    - name: Upload Allure results
+      uses: actions/upload-artifact@v3
+      with:
+        name: allure-results
+        path: allure-results
+    # 6. Generate Allure HTML Report
+    - name: Generate Allure report
+      uses: ashikkumar23/[email protected]
+      with:
+        ALLURE_RESULTS_PATH: allure-results
+        ALLURE_REPORT_PATH: allure-report
+
+    # 7. Upload Allure HTML report
+    - name: Upload Allure HTML as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: allure-report
+        path: allure-report
