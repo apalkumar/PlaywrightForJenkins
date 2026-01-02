@@ -2,48 +2,38 @@ pipeline {
     agent any
 
     tools {
-        // Assumes you configured Allure CLI in Jenkins global tools
-        allure 'allure'
+        allure 'allure'   // your global Allure CLI installation name
     }
 
     stages {
-
-        stage('Checkout Code') {
+        stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/apalkumar/PlaywrightForJenkins.git'
+                git 'https://github.com/apalkumar/PlaywrightForJenkins.git'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                echo "Installing Python and Playwright dependencies..."
-
                 bat 'python -m pip install --upgrade pip'
                 bat 'pip install -r requirements.txt'
                 bat 'playwright install'
             }
         }
 
-        stage('Run Tests in Parallel') {
+        stage('Run Tests') {
             steps {
-                echo "Running tests in parallel..."
-                bat 'pytest -n 3 --alluredir=allure-results'
-            }
-        }
-
-        stage('Generate Allure HTML Report') {
-            steps {
-                echo "Generating Allure report..."
-                bat 'allure generate allure-results --clean -o allure-report'
+                bat 'pytest -n auto --alluredir=allure-results'
             }
         }
     }
 
     post {
         always {
-            allure includeProperties: false,
-                   reportDir: 'allure-report',
-                   results: [[path: 'allure-results']]
+            allure([
+                includeProperties: false,
+                jdk: '',
+                results: [[path: 'allure-results']]
+            ])
         }
     }
 }
