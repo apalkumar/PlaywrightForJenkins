@@ -35,6 +35,18 @@ jobs:
       run: |
         pytest -n auto --alluredir=allure-results
 
+    - name: Generate Allure HTML Report
+      run: |
+        pip install allure-commandline
+        allure generate allure-results --clean -o allure-report
+
+    - name: Deploy Allure Report
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_branch: gh-pages
+        publish_dir: ./allure-report
+
     # 5. Upload Allure results as artifacts
     - name: Upload Allure results
       uses: actions/upload-artifact@v4
@@ -42,11 +54,15 @@ jobs:
         name: allure-results
         path: allure-results
 
+
+
     - name: Run tests inside Xvfb
       run: |
         sudo apt-get update
         sudo apt-get install -y xvfb
-        xvfb-run -a pytest -n auto --alluredir=allure-results        
+        xvfb-run -a pytest -n auto --alluredir=allure-results   
+
+
     # # 6. Generate Allure HTML Report
     # - name: Generate Allure report
     #   uses: ashikkumar23/[email protected]
