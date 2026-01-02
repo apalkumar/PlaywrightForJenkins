@@ -5,6 +5,10 @@ pipeline {
         allure 'allure'   // your global Allure CLI installation name
     }
 
+     triggers {
+        githubPush()            // listen for GitHub push events
+    }
+
     stages {
         stage('Checkout') {
             steps {
