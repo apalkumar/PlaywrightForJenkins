@@ -53,6 +53,7 @@ jobs:
       with:
         name: allure-results
         path: allure-results
+        reporter: allure
 
 
 
@@ -72,7 +73,7 @@ jobs:
 
     # # 7. Upload Allure HTML report
     # - name: Upload Allure HTML as artifact
-    #   uses: actions/upload-artifact@v3
+    #   uses: actions/upload-artifact@v4
     #   with:
     #     name: allure-report
     #     path: allure-report
