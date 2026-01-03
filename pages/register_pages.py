@@ -63,7 +63,3 @@ class RegisterPage(BasePage):
     # ---------- Submit ----------
     def submit(self):
         self.page.locator("#Button1").click()
-
-    # open the other url
-    def openAnotherUrl(self):
-        self.page.goto("https://demo.automationtesting.in/Charts.html")
